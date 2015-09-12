@@ -1,0 +1,16 @@
+{
+  "name": "rxjs-react-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "watchify app/main.jsx -t babelify -o bundle/bundle.js -v"
+  },
+  "author": "Mauricio Soares",
+  "license": "MIT",
+  "devDependencies": {
+    "babelify": "^6.3.0",
+    "browserify": "^11.1.0",
+    "watchify": "^3.4.0"
+  }
+}

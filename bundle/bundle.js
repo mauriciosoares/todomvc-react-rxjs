@@ -129,6 +129,14 @@ _intent2['default'].subject.subscribe(function (payload) {
 });
 
 // this line triggers the first state of the application
+// we used RepalySubject because the subscription was made
+// AFTER the first onNext method was called.
+//
+// Also since the ReplaySubject() received 1 as parameter,
+// only the last `onNext` method would be called.
+// This parameter is a buffer of items that would be called.
+//
+// [https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/replaysubject.md]
 subject.onNext(state);
 
 exports['default'] = { subject: subject };

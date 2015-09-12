@@ -1,5 +1,6 @@
 import React from 'react';
-import intent from '../intent';
+import CounterIntent from '../intents/counter-intent.js';
+import YahharoIntent from '../intents/yahharo-intent.js';
 
 class Root extends React.Component {
   constructor(props) {
@@ -9,7 +10,12 @@ class Root extends React.Component {
   render() {
     return (
       <div>
-        <div>{this.props.counter}</div>
+        <div>{this.props.YahharoState.greeting}</div>
+        <button onClick={this.switchGreeting}>Switch Greeting</button>
+
+        <br />
+
+        <div>{this.props.CounterState.counter}</div>
         <button onClick={this.incrementCounter}>Increment Counter</button>
       </div>
     );
@@ -20,7 +26,11 @@ class Root extends React.Component {
     // which than triggers the model subscription,
     // and then reloads the app in the main.jsx
     // subscription
-    intent.incrementCounter();
+    CounterIntent.incrementCounter();
+  }
+
+  switchGreeting() {
+    YahharoIntent.switchGreeting();
   }
 };
 

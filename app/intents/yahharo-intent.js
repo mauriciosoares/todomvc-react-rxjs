@@ -1,14 +1,14 @@
 import Rx from 'rx';
-import Keys from './keys';
+import Keys from '../keys/yahharo-keys';
 
 const intentSubject = new Rx.ReplaySubject(1);
 
 export default {
   subject: intentSubject,
 
-  incrementCounter() {
+  switchGreeting() {
     intentSubject.onNext({
-      key: Keys.INCREMENT_COUNTER
+      key: Keys.SWITCH_GREETING
     });
   }
 };

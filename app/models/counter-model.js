@@ -1,7 +1,7 @@
 import Rx from 'rx';
 import update from 'react/lib/update';
-import Keys from './keys';
-import Intent from './intent';
+import CounterKeys from '../keys/counter-keys.js';
+import Intent from '../intents/counter-intent.js';
 
 let subject = new Rx.ReplaySubject(1);
 
@@ -26,7 +26,7 @@ function incrementCounter() {
 Intent.subject.subscribe((payload) => {
   // payload comes from the keys in the intent.js file
   switch (payload.key) {
-    case Keys.INCREMENT_COUNTER:
+    case CounterKeys.INCREMENT_COUNTER:
       incrementCounter();
       break;
 

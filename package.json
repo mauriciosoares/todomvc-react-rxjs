@@ -12,5 +12,9 @@
     "babelify": "^6.3.0",
     "browserify": "^11.1.0",
     "watchify": "^3.4.0"
+  },
+  "dependencies": {
+    "keymirror": "^0.1.1",
+    "rx": "^3.1.2"
   }
 }

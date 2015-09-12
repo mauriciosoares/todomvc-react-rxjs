@@ -1,12 +1,8 @@
 import React from 'react';
-import test from './test';
+import Rx from 'rx';
+import Model from './model';
+import Root from './views/root.jsx';
 
-class App extends React.Component {
-  render() {
-    return (
-      <div> teste </div>
-    );
-  }
-};
-
-React.render(<App />, document.body);
+Model.subject.subscribe((appState) => {
+  React.render(<Root {...appState} />, document.getElementById('app'));
+});

@@ -10,12 +10,13 @@ class Root extends React.Component {
   render() {
     return (
       <div>
-        <div>{this.props.YahharoState.greeting}</div>
-        <button onClick={this.switchGreeting}>Switch Greeting</button>
+        <div>
+          {this.props.filteredList.concat(',')}
+        </div>
 
-        <br />
-
-        <div>{this.props.CounterState.counter}</div>
+        <div>
+          {this.props.counter}
+        </div>
         <button onClick={this.incrementCounter}>Increment Counter</button>
       </div>
     );

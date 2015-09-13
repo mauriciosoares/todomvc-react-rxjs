@@ -7,13 +7,16 @@ let subject = new Rx.ReplaySubject(1);
 
 // the state of the application
 let state = {
-  counter: 0
+  counter: 0,
+  list: [],
+  filterEvens: true
 };
 
 function incrementCounter() {
   state = update(state, {
     $merge: {
-      counter: state.counter + 1
+      counter: state.counter + 1,
+      list: state.list.concat(state.counter)
     }
   });
 

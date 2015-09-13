@@ -1,14 +1,14 @@
 import Rx from 'rx';
 import Keys from '../keys/counter-keys';
 
-const intentSubject = new Rx.ReplaySubject(1);
+const subjects = {
+  incrementCounterSubject: new Rx.Subject()
+};
 
 export default {
-  subject: intentSubject,
+  subjects,
 
   incrementCounter() {
-    intentSubject.onNext({
-      key: Keys.INCREMENT_COUNTER
-    });
+    subjects.incrementCounterSubject.onNext();
   }
 };

@@ -12,7 +12,9 @@ let state = {
   filterEvens: true
 };
 
-function incrementCounter() {
+// this subscription is triggered whenever
+// the user clicks in the button, in the Root element
+Intent.subjects.incrementCounterSubject.subscribe((payload) => {
   state = update(state, {
     $merge: {
       counter: state.counter + 1,
@@ -22,20 +24,6 @@ function incrementCounter() {
 
   // this guy triggers the subscription in the main.jsx file
   subject.onNext(state);
-}
-
-// this subscription is triggered whenever
-// the user clicks in the button, in the Root element
-Intent.subject.subscribe((payload) => {
-  // payload comes from the keys in the intent.js file
-  switch (payload.key) {
-    case CounterKeys.INCREMENT_COUNTER:
-      incrementCounter();
-      break;
-
-    default:
-      console.warn(`${payload.key} not recognized in model.`);
-  }
 });
 
 // this line triggers the first state of the application

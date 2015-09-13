@@ -15,15 +15,15 @@ var _keysCounterKeys = require('../keys/counter-keys');
 
 var _keysCounterKeys2 = _interopRequireDefault(_keysCounterKeys);
 
-var intentSubject = new _rx2['default'].ReplaySubject(1);
+var subjects = {
+  incrementCounterSubject: new _rx2['default'].Subject()
+};
 
 exports['default'] = {
-  subject: intentSubject,
+  subjects: subjects,
 
   incrementCounter: function incrementCounter() {
-    intentSubject.onNext({
-      key: _keysCounterKeys2['default'].INCREMENT_COUNTER
-    });
+    subjects.incrementCounterSubject.onNext();
   }
 };
 module.exports = exports['default'];
@@ -186,7 +186,9 @@ var state = {
   filterEvens: true
 };
 
-function incrementCounter() {
+// this subscription is triggered whenever
+// the user clicks in the button, in the Root element
+_intentsCounterIntentJs2['default'].subjects.incrementCounterSubject.subscribe(function (payload) {
   state = (0, _reactLibUpdate2['default'])(state, {
     $merge: {
       counter: state.counter + 1,
@@ -196,20 +198,6 @@ function incrementCounter() {
 
   // this guy triggers the subscription in the main.jsx file
   subject.onNext(state);
-}
-
-// this subscription is triggered whenever
-// the user clicks in the button, in the Root element
-_intentsCounterIntentJs2['default'].subject.subscribe(function (payload) {
-  // payload comes from the keys in the intent.js file
-  switch (payload.key) {
-    case _keysCounterKeysJs2['default'].INCREMENT_COUNTER:
-      incrementCounter();
-      break;
-
-    default:
-      console.warn(payload.key + ' not recognized in model.');
-  }
 });
 
 // this line triggers the first state of the application

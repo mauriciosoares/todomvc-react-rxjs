@@ -177,14 +177,14 @@ var _intentsCounterIntentJs = require('../intents/counter-intent.js');
 
 var _intentsCounterIntentJs2 = _interopRequireDefault(_intentsCounterIntentJs);
 
-var subject = new _rx2['default'].ReplaySubject(1);
-
 // the state of the application
 var state = {
   counter: 0,
   list: [],
   filterEvens: true
 };
+
+var subject = new _rx2['default'].BehaviorSubject(state);
 
 // this subscription is triggered whenever
 // the user clicks in the button, in the Root element
@@ -209,7 +209,7 @@ _intentsCounterIntentJs2['default'].subjects.incrementCounterSubject.subscribe(f
 // This parameter is a buffer of items that would be called.
 //
 // [https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/replaysubject.md]
-subject.onNext(state);
+// subject.onNext(state);
 
 exports['default'] = { subject: subject };
 module.exports = exports['default'];

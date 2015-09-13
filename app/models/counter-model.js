@@ -3,14 +3,14 @@ import update from 'react/lib/update';
 import CounterKeys from '../keys/counter-keys.js';
 import Intent from '../intents/counter-intent.js';
 
-let subject = new Rx.ReplaySubject(1);
-
 // the state of the application
 let state = {
   counter: 0,
   list: [],
   filterEvens: true
 };
+
+let subject = new Rx.BehaviorSubject(state);
 
 // this subscription is triggered whenever
 // the user clicks in the button, in the Root element
@@ -35,6 +35,6 @@ Intent.subjects.incrementCounterSubject.subscribe((payload) => {
 // This parameter is a buffer of items that would be called.
 //
 // [https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/replaysubject.md]
-subject.onNext(state);
+// subject.onNext(state);
 
 export default { subject };

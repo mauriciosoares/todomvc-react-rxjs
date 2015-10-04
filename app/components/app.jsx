@@ -11,12 +11,12 @@ export default class App extends Component {
     console.log(this.props.todos);
     return (
       <div>
-        <input ref="input" onKeyUp={::this.submit} />
+        <input ref="input" onKeyUp={::this.add} />
         <div>
           {
             this.props.todos.map(todo => {
               return (
-                <div key={+new Date()}>{todo.text}</div>
+                <div onClick={this.delete.bind(this, todo.id)} key={todo.id}>{todo.text}</div>
               )
             })
           }
@@ -25,10 +25,14 @@ export default class App extends Component {
     )
   }
 
-  submit(event) {
+  add(event) {
     if(event.which !== 13 || !this.refs.input.getDOMNode().value) return;
     todoActions.add(this.refs.input.getDOMNode().value);
 
     this.refs.input.getDOMNode().value = '';
+  }
+
+  delete(id) {
+    todoActions.delete(id);
   }
 }

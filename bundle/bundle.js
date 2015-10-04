@@ -12,7 +12,8 @@ var _rx = require('rx');
 var _rx2 = _interopRequireDefault(_rx);
 
 var subjects = {
-  add: new _rx2['default'].Subject()
+  add: new _rx2['default'].Subject(),
+  'delete': new _rx2['default'].Subject()
 };
 
 exports['default'] = {
@@ -20,6 +21,10 @@ exports['default'] = {
 
   add: function add(item) {
     subjects.add.onNext(item);
+  },
+
+  'delete': function _delete(id) {
+    subjects['delete'].onNext(id);
   }
 };
 module.exports = exports['default'];
@@ -61,18 +66,20 @@ var App = (function (_Component) {
   _createClass(App, [{
     key: 'render',
     value: function render() {
+      var _this = this;
+
       console.log(this.props.todos);
       return _react2['default'].createElement(
         'div',
         null,
-        _react2['default'].createElement('input', { ref: 'input', onKeyUp: this.submit.bind(this) }),
+        _react2['default'].createElement('input', { ref: 'input', onKeyUp: this.add.bind(this) }),
         _react2['default'].createElement(
           'div',
           null,
           this.props.todos.map(function (todo) {
             return _react2['default'].createElement(
               'div',
-              { key: +new Date() },
+              { onClick: _this['delete'].bind(_this, todo.id), key: todo.id },
               todo.text
             );
           })
@@ -80,12 +87,17 @@ var App = (function (_Component) {
       );
     }
   }, {
-    key: 'submit',
-    value: function submit(event) {
+    key: 'add',
+    value: function add(event) {
       if (event.which !== 13 || !this.refs.input.getDOMNode().value) return;
       _actionsTodo2['default'].add(this.refs.input.getDOMNode().value);
 
       this.refs.input.getDOMNode().value = '';
+    }
+  }, {
+    key: 'delete',
+    value: function _delete(id) {
+      _actionsTodo2['default']['delete'](id);
     }
   }]);
 
@@ -143,7 +155,16 @@ var subject = new _rx2['default'].BehaviorSubject(todos);
 
 _actionsTodo2['default'].subjects.add.subscribe(function (text) {
   todos.push({
+    id: +new Date(),
     text: text
+  });
+
+  subject.onNext(todos);
+});
+
+_actionsTodo2['default'].subjects['delete'].subscribe(function (id) {
+  todos = todos.filter(function (todo) {
+    return todo.id !== id;
   });
 
   subject.onNext(todos);

@@ -1,13 +1,13 @@
 import Rx from 'rx';
 
-const actions = {
+const subjects = {
   add: new Rx.Subject()
 };
 
 export default {
-  actions,
+  subjects,
 
   add(item) {
-    actions.add.onNext(item);
+    subjects.add.onNext(item);
   }
 };

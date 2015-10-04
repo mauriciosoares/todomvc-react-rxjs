@@ -1,26 +1,18 @@
 import React, {Component} from 'react';
+import Todos from './Todos.jsx'
 
 import todoActions from '../actions/todo'
 
 export default class App extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props);
   }
 
   render() {
-    console.log(this.props.todos);
     return (
       <div>
         <input ref="input" onKeyUp={::this.add} />
-        <div>
-          {
-            this.props.todos.map(todo => {
-              return (
-                <div onClick={this.delete.bind(this, todo.id)} key={todo.id}>{todo.text}</div>
-              )
-            })
-          }
-        </div>
+        <Todos {...this.props} />
       </div>
     )
   }
@@ -30,9 +22,5 @@ export default class App extends Component {
     todoActions.add(this.refs.input.getDOMNode().value);
 
     this.refs.input.getDOMNode().value = '';
-  }
-
-  delete(id) {
-    todoActions.delete(id);
   }
 }

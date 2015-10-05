@@ -3,7 +3,8 @@ import Rx from 'rx';
 const subjects = {
   add: new Rx.Subject(),
   delete: new Rx.Subject(),
-  update: new Rx.Subject()
+  update: new Rx.Subject(),
+  edit: new Rx.Subject()
 };
 
 export default {
@@ -19,5 +20,9 @@ export default {
 
   update(id, text) {
     subjects.update.onNext({ id, text });
+  },
+
+  edit(id, edit) {
+    subjects.edit.onNext({ id, edit });
   }
 };

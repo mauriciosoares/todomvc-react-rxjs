@@ -9,6 +9,7 @@ let subject = new Rx.BehaviorSubject(todos);
 todoActions.subjects.add.subscribe((text) => {
   todos.push({
     id: +new Date(),
+    edit: false,
     text
   });
 
@@ -24,6 +25,16 @@ todoActions.subjects.delete.subscribe((id) => {
 todoActions.subjects.update.subscribe((updates) => {
   todos = todos.map(todo => {
     if(todo.id === updates.id) todo.text = updates.text;
+
+    return todo;
+  });
+
+  subject.onNext(todos);
+});
+
+todoActions.subjects.edit.subscribe((updates) => {
+  todos = todos.map(todo => {
+    if(todo.id === updates.id) todo.edit = updates.edit;
 
     return todo;
   });

@@ -8,14 +8,10 @@ import keys from '../utils/keys';
 export default class Todos extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      isEditing: false
-    };
   }
 
   render() {
-    return (this.state.isEditing) ? this.renderEdit() : this.renderText();
+    return (this.props.edit) ? this.renderEdit() : this.renderText();
   }
 
   renderText() {
@@ -30,17 +26,22 @@ export default class Todos extends Component {
   renderEdit() {
     return (
       <div>
-        <TextInput onKeyUp={::this.update} onBlur={::this.unEdit} ref="input" defaultValue="aslkdfj" autoFocus />
+        <TextInput
+          onKeyUp={::this.update}
+          onBlur={::this.unEdit}
+          ref="input"
+          defaultValue={this.props.text}
+          autoFocus />
       </div>
     )
   }
 
-  edit() {
-    this.setState({ isEditing: true });
+  edit(teste) {
+    todoActions.edit(this.props.id, true);
   }
 
   unEdit() {
-    this.setState({ isEditing: false });
+    todoActions.edit(this.props.id, false);
   }
 
   delete() {

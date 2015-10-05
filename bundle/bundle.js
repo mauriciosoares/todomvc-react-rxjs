@@ -14,7 +14,8 @@ var _rx2 = _interopRequireDefault(_rx);
 var subjects = {
   add: new _rx2['default'].Subject(),
   'delete': new _rx2['default'].Subject(),
-  update: new _rx2['default'].Subject()
+  update: new _rx2['default'].Subject(),
+  edit: new _rx2['default'].Subject()
 };
 
 exports['default'] = {
@@ -30,6 +31,10 @@ exports['default'] = {
 
   update: function update(id, text) {
     subjects.update.onNext({ id: id, text: text });
+  },
+
+  edit: function edit(id, _edit) {
+    subjects.edit.onNext({ id: id, edit: _edit });
   }
 };
 module.exports = exports['default'];
@@ -192,16 +197,12 @@ var Todos = (function (_Component) {
     _classCallCheck(this, Todos);
 
     _get(Object.getPrototypeOf(Todos.prototype), 'constructor', this).call(this, props);
-
-    this.state = {
-      isEditing: false
-    };
   }
 
   _createClass(Todos, [{
     key: 'render',
     value: function render() {
-      return this.state.isEditing ? this.renderEdit() : this.renderText();
+      return this.props.edit ? this.renderEdit() : this.renderText();
     }
   }, {
     key: 'renderText',
@@ -227,18 +228,23 @@ var Todos = (function (_Component) {
       return _react2['default'].createElement(
         'div',
         null,
-        _react2['default'].createElement(_TextInputJsx2['default'], { onKeyUp: this.update.bind(this), onBlur: this.unEdit.bind(this), ref: 'input', defaultValue: 'aslkdfj', autoFocus: true })
+        _react2['default'].createElement(_TextInputJsx2['default'], {
+          onKeyUp: this.update.bind(this),
+          onBlur: this.unEdit.bind(this),
+          ref: 'input',
+          defaultValue: this.props.text,
+          autoFocus: true })
       );
     }
   }, {
     key: 'edit',
-    value: function edit() {
-      this.setState({ isEditing: true });
+    value: function edit(teste) {
+      _actionsTodo2['default'].edit(this.props.id, true);
     }
   }, {
     key: 'unEdit',
     value: function unEdit() {
-      this.setState({ isEditing: false });
+      _actionsTodo2['default'].edit(this.props.id, false);
     }
   }, {
     key: 'delete',
@@ -370,6 +376,7 @@ var subject = new _rx2['default'].BehaviorSubject(todos);
 _actionsTodo2['default'].subjects.add.subscribe(function (text) {
   todos.push({
     id: +new Date(),
+    edit: false,
     text: text
   });
 
@@ -387,6 +394,16 @@ _actionsTodo2['default'].subjects['delete'].subscribe(function (id) {
 _actionsTodo2['default'].subjects.update.subscribe(function (updates) {
   todos = todos.map(function (todo) {
     if (todo.id === updates.id) todo.text = updates.text;
+
+    return todo;
+  });
+
+  subject.onNext(todos);
+});
+
+_actionsTodo2['default'].subjects.edit.subscribe(function (updates) {
+  todos = todos.map(function (todo) {
+    if (todo.id === updates.id) todo.edit = updates.edit;
 
     return todo;
   });

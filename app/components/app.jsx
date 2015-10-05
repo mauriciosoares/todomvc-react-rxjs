@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
-import Todos from './Todos.jsx'
+import Todos from './Todos.jsx';
 
-import todoActions from '../actions/todo'
+import todoActions from '../actions/todo';
+import TextInput from './TextInput.jsx';
+
+import keys from '../utils/keys';
 
 export default class App extends Component {
   constructor(props) {
@@ -11,16 +14,18 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <input ref="input" onKeyUp={::this.add} />
+        <TextInput ref="input" onKeyUp={::this.add} />
         <Todos {...this.props} />
       </div>
     )
   }
 
   add(event) {
-    if(event.which !== 13 || !this.refs.input.getDOMNode().value) return;
-    todoActions.add(this.refs.input.getDOMNode().value);
+    let domNode = React.findDOMNode(this.refs.input);
 
-    this.refs.input.getDOMNode().value = '';
+    if(event.which !== keys.ENTER || !domNode.value) return;
+
+    todoActions.add(domNode.value);
+    domNode.value = '';
   }
 }

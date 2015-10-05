@@ -21,4 +21,14 @@ todoActions.subjects.delete.subscribe((id) => {
   subject.onNext(todos);
 });
 
+todoActions.subjects.update.subscribe((updates) => {
+  todos = todos.map(todo => {
+    if(todo.id === updates.id) todo.text = updates.text;
+
+    return todo;
+  });
+
+  subject.onNext(todos);
+});
+
 export default { subject };

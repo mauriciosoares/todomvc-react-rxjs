@@ -7,5 +7,4 @@ import App from './components/App.jsx';
 
 todosStore.subject.subscribe((store) => {
   React.render(<App todos={store} />, document.getElementById('app'));
-})
-
+});

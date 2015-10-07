@@ -17,7 +17,7 @@ export default class Todos extends Component {
   renderText() {
     return (
       <div>
-        <span onDoubleClick={::this.edit}>{this.props.text}</span>
+        <span onDoubleClick={::this.toggle}>{this.props.text}</span>
         <a href="#" onClick={::this.delete}>X</a>
       </div>
     )
@@ -28,7 +28,7 @@ export default class Todos extends Component {
       <div>
         <TextInput
           onKeyUp={::this.update}
-          onBlur={::this.unEdit}
+          onBlur={::this.toggle}
           ref="input"
           defaultValue={this.props.text}
           autoFocus />
@@ -36,12 +36,8 @@ export default class Todos extends Component {
     )
   }
 
-  edit(teste) {
-    todoActions.edit(this.props.id, true);
-  }
-
-  unEdit() {
-    todoActions.edit(this.props.id, false);
+  toggle() {
+    todoActions.toggle(this.props.id);
   }
 
   delete() {
@@ -49,13 +45,13 @@ export default class Todos extends Component {
   }
 
   update(event) {
-    if(event.which === keys.ESC) return this.unEdit();
+    if(event.which === keys.ESC) return this.toggle();
 
     let domNode = React.findDOMNode(this.refs.input);
     if(event.which !== 13 || !domNode.value) return;
 
 
-    this.unEdit();
+    this.toggle();
 
     todoActions.update(this.props.id, domNode.value);
     domNode.value = '';

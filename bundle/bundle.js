@@ -15,7 +15,7 @@ var subjects = {
   add: new _rx2['default'].Subject(),
   'delete': new _rx2['default'].Subject(),
   update: new _rx2['default'].Subject(),
-  edit: new _rx2['default'].Subject()
+  toggle: new _rx2['default'].Subject()
 };
 
 exports['default'] = {
@@ -33,8 +33,8 @@ exports['default'] = {
     subjects.update.onNext({ id: id, text: text });
   },
 
-  edit: function edit(id, _edit) {
-    subjects.edit.onNext({ id: id, edit: _edit });
+  toggle: function toggle(id) {
+    subjects.toggle.onNext(id);
   }
 };
 module.exports = exports['default'];
@@ -212,7 +212,7 @@ var Todos = (function (_Component) {
         null,
         _react2['default'].createElement(
           'span',
-          { onDoubleClick: this.edit.bind(this) },
+          { onDoubleClick: this.toggle.bind(this) },
           this.props.text
         ),
         _react2['default'].createElement(
@@ -230,21 +230,16 @@ var Todos = (function (_Component) {
         null,
         _react2['default'].createElement(_TextInputJsx2['default'], {
           onKeyUp: this.update.bind(this),
-          onBlur: this.unEdit.bind(this),
+          onBlur: this.toggle.bind(this),
           ref: 'input',
           defaultValue: this.props.text,
           autoFocus: true })
       );
     }
   }, {
-    key: 'edit',
-    value: function edit(teste) {
-      _actionsTodo2['default'].edit(this.props.id, true);
-    }
-  }, {
-    key: 'unEdit',
-    value: function unEdit() {
-      _actionsTodo2['default'].edit(this.props.id, false);
+    key: 'toggle',
+    value: function toggle() {
+      _actionsTodo2['default'].toggle(this.props.id);
     }
   }, {
     key: 'delete',
@@ -254,12 +249,12 @@ var Todos = (function (_Component) {
   }, {
     key: 'update',
     value: function update(event) {
-      if (event.which === _utilsKeys2['default'].ESC) return this.unEdit();
+      if (event.which === _utilsKeys2['default'].ESC) return this.toggle();
 
       var domNode = _react2['default'].findDOMNode(this.refs.input);
       if (event.which !== 13 || !domNode.value) return;
 
-      this.unEdit();
+      this.toggle();
 
       _actionsTodo2['default'].update(this.props.id, domNode.value);
       domNode.value = '';
@@ -395,12 +390,12 @@ _actionsTodo2['default'].subjects['delete'].subscribe(function (id) {
   subject.onNext(todos);
 });
 
-_actionsTodo2['default'].subjects.update.subscribe(function (updates) {
+_actionsTodo2['default'].subjects.update.subscribe(function (value) {
   todos = todos.map(function (todo) {
 
-    if (todo.id === updates.id) {
+    if (todo.id === value.id) {
       return _extends({}, todo, {
-        text: updates.text
+        text: value.text
       });
     }
 
@@ -410,9 +405,13 @@ _actionsTodo2['default'].subjects.update.subscribe(function (updates) {
   subject.onNext(todos);
 });
 
-_actionsTodo2['default'].subjects.edit.subscribe(function (updates) {
+_actionsTodo2['default'].subjects.toggle.subscribe(function (id) {
   todos = todos.map(function (todo) {
-    if (todo.id === updates.id) todo.edit = updates.edit;
+    if (todo.id === id) {
+      return _extends({}, todo, {
+        edit: !todo.edit
+      });
+    }
 
     return todo;
   });

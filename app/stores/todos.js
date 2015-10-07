@@ -22,13 +22,13 @@ todoActions.subjects.delete.subscribe((id) => {
   subject.onNext(todos);
 });
 
-todoActions.subjects.update.subscribe((updates) => {
+todoActions.subjects.update.subscribe((value) => {
   todos = todos.map(todo => {
 
-    if(todo.id === updates.id) {
+    if(todo.id === value.id) {
       return {
         ...todo,
-        text: updates.text
+        text: value.text
       };
     }
 
@@ -38,9 +38,14 @@ todoActions.subjects.update.subscribe((updates) => {
   subject.onNext(todos);
 });
 
-todoActions.subjects.edit.subscribe((updates) => {
+todoActions.subjects.toggle.subscribe((id) => {
   todos = todos.map(todo => {
-    if(todo.id === updates.id) todo.edit = updates.edit;
+    if(todo.id === id) {
+      return {
+        ...todo,
+        edit: !todo.edit
+      }
+    }
 
     return todo;
   });

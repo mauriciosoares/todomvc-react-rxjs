@@ -4,7 +4,8 @@ const subjects = {
   add: new Rx.Subject(),
   delete: new Rx.Subject(),
   update: new Rx.Subject(),
-  toggle: new Rx.Subject()
+  toggleEdit: new Rx.Subject(),
+  toggleCompleted: new Rx.Subject()
 };
 
 export default {
@@ -22,7 +23,11 @@ export default {
     subjects.update.onNext({ id, text });
   },
 
-  toggle(id) {
-    subjects.toggle.onNext(id);
+  toggleEdit(id) {
+    subjects.toggleEdit.onNext(id);
+  },
+
+  toggleCompleted(id, completed) {
+    subjects.toggleCompleted.onNext({ id, completed });
   }
 };

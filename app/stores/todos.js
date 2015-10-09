@@ -10,6 +10,7 @@ todoActions.subjects.add.subscribe((text) => {
   todos = [...todos, {
     id: +new Date(),
     edit: false,
+    completed: false,
     text
   }];
 
@@ -38,12 +39,27 @@ todoActions.subjects.update.subscribe((value) => {
   subject.onNext(todos);
 });
 
-todoActions.subjects.toggle.subscribe((id) => {
+todoActions.subjects.toggleEdit.subscribe((id) => {
   todos = todos.map(todo => {
     if(todo.id === id) {
       return {
         ...todo,
         edit: !todo.edit
+      }
+    }
+
+    return todo;
+  });
+
+  subject.onNext(todos);
+});
+
+todoActions.subjects.toggleCompleted.subscribe((data) => {
+  todos = todos.map(todo => {
+    if(todo.id === data.id) {
+      return {
+        ...todo,
+        completed: data.completed
       }
     }
 

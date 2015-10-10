@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import TextInput from './TextInput.jsx';
 
 import todoActions from '../actions/todo';
 import keys from '../utils/keys';
@@ -42,7 +41,7 @@ export default class Todos extends Component {
 
   renderEdit() {
     return (
-      <TextInput
+      <input
         onKeyUp={::this.update}
         onBlur={::this.toggleEdit}
         ref="input"

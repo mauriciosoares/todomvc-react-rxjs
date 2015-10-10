@@ -92,7 +92,7 @@ var App = (function (_Component) {
       return _react2['default'].createElement(
         'div',
         null,
-        _react2['default'].createElement(_HeaderJsx2['default'], null),
+        _react2['default'].createElement(_HeaderJsx2['default'], { todos: this.props.todos }),
         _react2['default'].createElement(_TodosJsx2['default'], this.props),
         _react2['default'].createElement(_FooterJsx2['default'], null)
       );
@@ -204,8 +204,29 @@ var Header = (function (_Component) {
       return _react2['default'].createElement(
         'div',
         null,
+        this.renderToggleAll(),
         _react2['default'].createElement(_TextInputJsx2['default'], { ref: 'input', onKeyUp: this.add.bind(this) })
       );
+    }
+  }, {
+    key: 'renderToggleAll',
+    value: function renderToggleAll() {
+      if (this.props.todos.length > 0) {
+        var allChecked = this.props.todos.filter(function (todo) {
+          return todo.completed;
+        }).length === this.props.todos.length;
+
+        return _react2['default'].createElement(
+          'a',
+          { href: '#', onClick: this.toggleAll.bind(this, allChecked) },
+          'Toggle all'
+        );
+      }
+    }
+  }, {
+    key: 'toggleAll',
+    value: function toggleAll(param) {
+      console.log(param);
     }
   }, {
     key: 'add',

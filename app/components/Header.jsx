@@ -13,9 +13,24 @@ export default class Header extends Component {
   render() {
     return (
       <div>
+        {this.renderToggleAll()}
         <TextInput ref="input" onKeyUp={::this.add} />
       </div>
     )
+  }
+
+  renderToggleAll() {
+    if(this.props.todos.length > 0) {
+      let allChecked = (this.props.todos.filter(todo => todo.completed).length === this.props.todos.length);
+
+      return (
+        <a href="#" onClick={this.toggleAll.bind(this, allChecked)}>Toggle all</a>
+      );
+    }
+  }
+
+  toggleAll(param) {
+    console.log(param);
   }
 
   add(event) {

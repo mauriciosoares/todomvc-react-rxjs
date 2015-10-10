@@ -12,7 +12,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Header />
+        <Header todos={this.props.todos} />
         <Todos {...this.props} />
         <Footer />
       </div>

@@ -21,16 +21,16 @@ export default class Header extends Component {
 
   renderToggleAll() {
     if(this.props.todos.length > 0) {
-      let allChecked = (this.props.todos.filter(todo => todo.completed).length === this.props.todos.length);
+      let allCompleted = (this.props.todos.filter(todo => todo.completed).length === this.props.todos.length);
 
       return (
-        <a href="#" onClick={this.toggleAll.bind(this, allChecked)}>Toggle all</a>
+        <a href="#" onClick={this.toggleAll.bind(this, allCompleted)}>Toggle all</a>
       );
     }
   }
 
-  toggleAll(param) {
-    console.log(param);
+  toggleAll(allCompleted) {
+    todoActions.toggleAll(allCompleted);
   }
 
   add(event) {

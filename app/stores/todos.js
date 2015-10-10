@@ -69,4 +69,15 @@ todoActions.subjects.toggleCompleted.subscribe((data) => {
   subject.onNext(todos);
 });
 
+todoActions.subjects.toggleAll.subscribe((allCompleted) => {
+  todos = todos.map(todo => {
+    return {
+      ...todo,
+      completed: !allCompleted
+    }
+  });
+
+  subject.onNext(todos);
+});
+
 export default { subject };

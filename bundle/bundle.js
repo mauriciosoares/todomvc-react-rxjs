@@ -16,7 +16,8 @@ var subjects = {
   'delete': new _rx2['default'].Subject(),
   update: new _rx2['default'].Subject(),
   toggleEdit: new _rx2['default'].Subject(),
-  toggleCompleted: new _rx2['default'].Subject()
+  toggleCompleted: new _rx2['default'].Subject(),
+  toggleAll: new _rx2['default'].Subject()
 };
 
 exports['default'] = {
@@ -40,6 +41,10 @@ exports['default'] = {
 
   toggleCompleted: function toggleCompleted(id, completed) {
     subjects.toggleCompleted.onNext({ id: id, completed: completed });
+  },
+
+  toggleAll: function toggleAll(allCompleted) {
+    subjects.toggleAll.onNext(allCompleted);
   }
 };
 module.exports = exports['default'];
@@ -212,21 +217,21 @@ var Header = (function (_Component) {
     key: 'renderToggleAll',
     value: function renderToggleAll() {
       if (this.props.todos.length > 0) {
-        var allChecked = this.props.todos.filter(function (todo) {
+        var allCompleted = this.props.todos.filter(function (todo) {
           return todo.completed;
         }).length === this.props.todos.length;
 
         return _react2['default'].createElement(
           'a',
-          { href: '#', onClick: this.toggleAll.bind(this, allChecked) },
+          { href: '#', onClick: this.toggleAll.bind(this, allCompleted) },
           'Toggle all'
         );
       }
     }
   }, {
     key: 'toggleAll',
-    value: function toggleAll(param) {
-      console.log(param);
+    value: function toggleAll(allCompleted) {
+      _actionsTodo2['default'].toggleAll(allCompleted);
     }
   }, {
     key: 'add',
@@ -572,6 +577,16 @@ _actionsTodo2['default'].subjects.toggleCompleted.subscribe(function (data) {
     }
 
     return todo;
+  });
+
+  subject.onNext(todos);
+});
+
+_actionsTodo2['default'].subjects.toggleAll.subscribe(function (allCompleted) {
+  todos = todos.map(function (todo) {
+    return _extends({}, todo, {
+      completed: !allCompleted
+    });
   });
 
   subject.onNext(todos);

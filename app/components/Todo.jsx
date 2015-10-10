@@ -12,7 +12,7 @@ export default class Todos extends Component {
 
   render() {
     return (
-      <li className={classNames({'completed': this.props.completed})}>
+      <li className={classNames({'completed': this.props.completed, 'editing': this.props.edit})}>
         {(this.props.edit) ? this.renderEdit() : this.renderText()}
       </li>
     )
@@ -42,14 +42,13 @@ export default class Todos extends Component {
 
   renderEdit() {
     return (
-      <li>
-        <TextInput
-          onKeyUp={::this.update}
-          onBlur={::this.toggleEdit}
-          ref="input"
-          defaultValue={this.props.text}
-          autoFocus />
-      </li>
+      <TextInput
+        onKeyUp={::this.update}
+        onBlur={::this.toggleEdit}
+        ref="input"
+        defaultValue={this.props.text}
+        className="edit"
+        autoFocus />
     )
   }
 

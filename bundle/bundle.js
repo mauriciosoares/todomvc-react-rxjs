@@ -430,7 +430,7 @@ var Todos = (function (_Component) {
     value: function render() {
       return _react2['default'].createElement(
         'li',
-        { className: (0, _classnames2['default'])({ 'completed': this.props.completed }) },
+        { className: (0, _classnames2['default'])({ 'completed': this.props.completed, 'editing': this.props.edit }) },
         this.props.edit ? this.renderEdit() : this.renderText()
       );
     }
@@ -464,16 +464,13 @@ var Todos = (function (_Component) {
   }, {
     key: 'renderEdit',
     value: function renderEdit() {
-      return _react2['default'].createElement(
-        'li',
-        null,
-        _react2['default'].createElement(_TextInputJsx2['default'], {
-          onKeyUp: this.update.bind(this),
-          onBlur: this.toggleEdit.bind(this),
-          ref: 'input',
-          defaultValue: this.props.text,
-          autoFocus: true })
-      );
+      return _react2['default'].createElement(_TextInputJsx2['default'], {
+        onKeyUp: this.update.bind(this),
+        onBlur: this.toggleEdit.bind(this),
+        ref: 'input',
+        defaultValue: this.props.text,
+        className: 'edit',
+        autoFocus: true });
     }
   }, {
     key: 'toggleEdit',

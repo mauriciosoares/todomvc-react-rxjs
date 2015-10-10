@@ -11,15 +11,27 @@ export default class Todos extends Component {
   }
 
   render() {
-    return (this.props.edit) ? this.renderEdit() : this.renderText();
+    return (
+      <li className={classNames({'completed': this.props.completed})}>
+        {(this.props.edit) ? this.renderEdit() : this.renderText()}
+      </li>
+    )
   }
 
   renderText() {
     return (
-      <div className={classNames({'completed': this.props.completed})}>
-        <input onChange={::this.toggleCompleted} ref="checkbox" type="checkbox" checked={(this.props.completed) ? 'checked' : ''} />
-        <span onDoubleClick={::this.toggleEdit}>{this.props.text}</span>
-        <a href="#" onClick={::this.delete}>X</a>
+      <div className="view">
+        <input
+          onChange={::this.toggleCompleted}
+          ref="checkbox"
+          type="checkbox"
+          checked={(this.props.completed) ? 'checked' : ''}
+          className="toggle" />
+
+        <label onDoubleClick={::this.toggleEdit}>{this.props.text}</label>
+        <button
+          className="destroy"
+          onClick={::this.delete}></button>
       </div>
     )
   }
@@ -30,14 +42,14 @@ export default class Todos extends Component {
 
   renderEdit() {
     return (
-      <div>
+      <li>
         <TextInput
           onKeyUp={::this.update}
           onBlur={::this.toggleEdit}
           ref="input"
           defaultValue={this.props.text}
           autoFocus />
-      </div>
+      </li>
     )
   }
 

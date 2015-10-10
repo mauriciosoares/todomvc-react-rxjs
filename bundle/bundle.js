@@ -153,8 +153,8 @@ var Footer = (function (_Component) {
     key: 'render',
     value: function render() {
       return _react2['default'].createElement(
-        'div',
-        null,
+        'footer',
+        { className: 'footer' },
         this.renderClearCompleted()
       );
     }
@@ -230,31 +230,19 @@ var Header = (function (_Component) {
     key: 'render',
     value: function render() {
       return _react2['default'].createElement(
-        'div',
-        null,
-        this.renderToggleAll(),
-        _react2['default'].createElement(_TextInputJsx2['default'], { ref: 'input', onKeyUp: this.add.bind(this) })
+        'header',
+        { className: 'header' },
+        _react2['default'].createElement(
+          'h1',
+          null,
+          'todos'
+        ),
+        _react2['default'].createElement(_TextInputJsx2['default'], {
+          className: 'new-todo',
+          placeholder: 'What needs to be done?',
+          ref: 'input',
+          onKeyUp: this.add.bind(this) })
       );
-    }
-  }, {
-    key: 'renderToggleAll',
-    value: function renderToggleAll() {
-      if (this.props.todos.length > 0) {
-        var allCompleted = this.props.todos.filter(function (todo) {
-          return todo.completed;
-        }).length === this.props.todos.length;
-
-        return _react2['default'].createElement(
-          'a',
-          { href: '#', onClick: this.toggleAll.bind(this, allCompleted) },
-          'Toggle all'
-        );
-      }
-    }
-  }, {
-    key: 'toggleAll',
-    value: function toggleAll(allCompleted) {
-      _actionsTodo2['default'].toggleAll(allCompleted);
     }
   }, {
     key: 'add',
@@ -367,25 +355,32 @@ var Todos = (function (_Component) {
   _createClass(Todos, [{
     key: 'render',
     value: function render() {
-      return this.props.edit ? this.renderEdit() : this.renderText();
+      return _react2['default'].createElement(
+        'li',
+        { className: (0, _classnames2['default'])({ 'completed': this.props.completed }) },
+        this.props.edit ? this.renderEdit() : this.renderText()
+      );
     }
   }, {
     key: 'renderText',
     value: function renderText() {
       return _react2['default'].createElement(
         'div',
-        { className: (0, _classnames2['default'])({ 'completed': this.props.completed }) },
-        _react2['default'].createElement('input', { onChange: this.toggleCompleted.bind(this), ref: 'checkbox', type: 'checkbox', checked: this.props.completed ? 'checked' : '' }),
+        { className: 'view' },
+        _react2['default'].createElement('input', {
+          onChange: this.toggleCompleted.bind(this),
+          ref: 'checkbox',
+          type: 'checkbox',
+          checked: this.props.completed ? 'checked' : '',
+          className: 'toggle' }),
         _react2['default'].createElement(
-          'span',
+          'label',
           { onDoubleClick: this.toggleEdit.bind(this) },
           this.props.text
         ),
-        _react2['default'].createElement(
-          'a',
-          { href: '#', onClick: this['delete'].bind(this) },
-          'X'
-        )
+        _react2['default'].createElement('button', {
+          className: 'destroy',
+          onClick: this['delete'].bind(this) })
       );
     }
   }, {
@@ -397,7 +392,7 @@ var Todos = (function (_Component) {
     key: 'renderEdit',
     value: function renderEdit() {
       return _react2['default'].createElement(
-        'div',
+        'li',
         null,
         _react2['default'].createElement(_TextInputJsx2['default'], {
           onKeyUp: this.update.bind(this),
@@ -465,6 +460,10 @@ var _TodoJsx = require('./Todo.jsx');
 
 var _TodoJsx2 = _interopRequireDefault(_TodoJsx);
 
+var _actionsTodo = require('../actions/todo');
+
+var _actionsTodo2 = _interopRequireDefault(_actionsTodo);
+
 var Todos = (function (_Component) {
   _inherits(Todos, _Component);
 
@@ -478,12 +477,37 @@ var Todos = (function (_Component) {
     key: 'render',
     value: function render() {
       return _react2['default'].createElement(
-        'div',
-        null,
-        this.props.todos.map(function (todo) {
-          return _react2['default'].createElement(_TodoJsx2['default'], _extends({ key: todo.id }, todo));
-        })
+        'section',
+        { className: 'main' },
+        this.renderToggleAll(),
+        _react2['default'].createElement(
+          'ul',
+          { className: 'todo-list' },
+          this.props.todos.map(function (todo) {
+            return _react2['default'].createElement(_TodoJsx2['default'], _extends({ key: todo.id }, todo));
+          })
+        )
       );
+    }
+  }, {
+    key: 'renderToggleAll',
+    value: function renderToggleAll() {
+      if (this.props.todos.length > 0) {
+        var allCompleted = this.props.todos.filter(function (todo) {
+          return todo.completed;
+        }).length === this.props.todos.length;
+
+        return _react2['default'].createElement('input', {
+          className: 'toggle-all',
+          type: 'checkbox',
+          checked: allCompleted,
+          onChange: this.toggleAll.bind(this, allCompleted) });
+      }
+    }
+  }, {
+    key: 'toggleAll',
+    value: function toggleAll(allCompleted) {
+      _actionsTodo2['default'].toggleAll(allCompleted);
     }
   }]);
 
@@ -493,7 +517,7 @@ var Todos = (function (_Component) {
 exports['default'] = Todos;
 module.exports = exports['default'];
 
-},{"./Todo.jsx":6,"react":167}],8:[function(require,module,exports){
+},{"../actions/todo":1,"./Todo.jsx":6,"react":167}],8:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }

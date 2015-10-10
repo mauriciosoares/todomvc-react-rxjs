@@ -9,9 +9,9 @@ export default class Footer extends Component {
 
   render() {
     return (
-      <div>
+      <footer className="footer">
         {this.renderClearCompleted()}
-      </div>
+      </footer>
     )
   }
 

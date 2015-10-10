@@ -17,7 +17,8 @@ var subjects = {
   update: new _rx2['default'].Subject(),
   toggleEdit: new _rx2['default'].Subject(),
   toggleCompleted: new _rx2['default'].Subject(),
-  toggleAll: new _rx2['default'].Subject()
+  toggleAll: new _rx2['default'].Subject(),
+  clearCompleted: new _rx2['default'].Subject()
 };
 
 exports['default'] = {
@@ -45,6 +46,10 @@ exports['default'] = {
 
   toggleAll: function toggleAll(allCompleted) {
     subjects.toggleAll.onNext(allCompleted);
+  },
+
+  clearCompleted: function clearCompleted() {
+    subjects.clearCompleted.onNext();
   }
 };
 module.exports = exports['default'];
@@ -99,7 +104,7 @@ var App = (function (_Component) {
         null,
         _react2['default'].createElement(_HeaderJsx2['default'], { todos: this.props.todos }),
         _react2['default'].createElement(_TodosJsx2['default'], this.props),
-        _react2['default'].createElement(_FooterJsx2['default'], null)
+        _react2['default'].createElement(_FooterJsx2['default'], { todos: this.props.todos })
       );
     }
   }]);
@@ -150,8 +155,26 @@ var Footer = (function (_Component) {
       return _react2['default'].createElement(
         'div',
         null,
-        'Footer'
+        this.renderClearCompleted()
       );
+    }
+  }, {
+    key: 'renderClearCompleted',
+    value: function renderClearCompleted() {
+      if (this.props.todos.filter(function (todo) {
+        return todo.completed;
+      }).length > 0) {
+        return _react2['default'].createElement(
+          'a',
+          { href: '#', onClick: this.clearCompleted },
+          'Clear completed'
+        );
+      }
+    }
+  }, {
+    key: 'clearCompleted',
+    value: function clearCompleted() {
+      _actionsTodo2['default'].clearCompleted();
     }
   }]);
 
@@ -587,6 +610,14 @@ _actionsTodo2['default'].subjects.toggleAll.subscribe(function (allCompleted) {
     return _extends({}, todo, {
       completed: !allCompleted
     });
+  });
+
+  subject.onNext(todos);
+});
+
+_actionsTodo2['default'].subjects.clearCompleted.subscribe(function () {
+  todos = todos.filter(function (todo) {
+    return !todo.completed;
   });
 
   subject.onNext(todos);

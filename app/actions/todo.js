@@ -6,7 +6,8 @@ const subjects = {
   update: new Rx.Subject(),
   toggleEdit: new Rx.Subject(),
   toggleCompleted: new Rx.Subject(),
-  toggleAll: new Rx.Subject()
+  toggleAll: new Rx.Subject(),
+  clearCompleted: new Rx.Subject()
 };
 
 export default {
@@ -34,5 +35,9 @@ export default {
 
   toggleAll(allCompleted) {
     subjects.toggleAll.onNext(allCompleted);
+  },
+
+  clearCompleted() {
+    subjects.clearCompleted.onNext();
   }
 };

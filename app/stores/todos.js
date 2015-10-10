@@ -80,4 +80,10 @@ todoActions.subjects.toggleAll.subscribe((allCompleted) => {
   subject.onNext(todos);
 });
 
+todoActions.subjects.clearCompleted.subscribe(() => {
+  todos = todos.filter(todo => !todo.completed);
+
+  subject.onNext(todos);
+});
+
 export default { subject };

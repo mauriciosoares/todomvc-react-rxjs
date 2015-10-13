@@ -7,7 +7,8 @@ const subjects = {
   toggleEdit: new Rx.Subject(),
   toggleCompleted: new Rx.Subject(),
   toggleAll: new Rx.Subject(),
-  clearCompleted: new Rx.Subject()
+  clearCompleted: new Rx.Subject(),
+  filter: new Rx.Subject()
 };
 
 export default {
@@ -39,5 +40,9 @@ export default {
 
   clearCompleted() {
     subjects.clearCompleted.onNext();
+  },
+
+  filter(toFilter) {
+    subjects.filter.onNext(toFilter);
   }
 };

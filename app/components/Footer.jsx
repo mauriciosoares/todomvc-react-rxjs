@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import ItemsLeft from './ItemsLeft.jsx';
+import Count from './Count.jsx';
+import Filter from './Filter.jsx';
 
 import todoActions from '../actions/todo';
 
@@ -16,7 +17,8 @@ export default class Footer extends Component {
     if(!this.props.todos.length) return null;
     return (
       <footer className="footer">
-        <ItemsLeft length={this.props.todos.filter(todo => !todo.completed).length} />
+        <Count length={this.props.todos.filter(todo => !todo.completed).length} />
+        <Filter filter={this.props.filter} />
         {this.renderClearCompleted()}
       </footer>
     )

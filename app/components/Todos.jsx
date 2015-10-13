@@ -9,20 +9,22 @@ export default class Todos extends Component {
   }
 
   render() {
+    let todos = this.props.todos.filter(::this.renderTodo);
+
     return (
       <section className="main">
         {this.renderToggleAll()}
         <ul className="todo-list">
-          {
-            this.props.todos.map(todo => {
-              return (
-                <Todo key={todo.id} {...todo} />
-              )
-            })
-          }
+          {todos.map(todo => <Todo key={todo.id} {...todo} />)}
         </ul>
       </section>
     )
+  }
+
+  renderTodo(todo) {
+    if(this.props.filter === undefined) return true;
+
+    return this.props.filter === todo.completed;
   }
 
   renderToggleAll() {

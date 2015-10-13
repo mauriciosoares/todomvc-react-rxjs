@@ -1,89 +1,140 @@
 import Rx from 'rx';
+import update from 'react-addons-update';
 
 import todoActions from '../actions/todo';
 
-let todos = [];
+let store = {
+  todos: [],
+  filter: undefined
+};
 
-let subject = new Rx.BehaviorSubject(todos);
+let subject = new Rx.BehaviorSubject(store);
 
 todoActions.subjects.add.subscribe((text) => {
-  todos = [...todos, {
-    id: +new Date(),
-    edit: false,
-    completed: false,
-    text
-  }];
+  store = update(store, {
+    todos: {
+      $push: [{
+        id: +new Date(),
+        edit: false,
+        completed: false,
+        text
+      }]
+    }
+  });
 
-  subject.onNext(todos);
+  subject.onNext(store);
 });
 
 todoActions.subjects.delete.subscribe((id) => {
-  todos = todos.filter(todo => todo.id !== id);
+  store = update(store, {
+    todos: {
+      $apply: todos => todos.filter(todo => todo.id !== id)
+    }
+  });
 
-  subject.onNext(todos);
+  subject.onNext(store);
 });
 
 todoActions.subjects.update.subscribe((value) => {
-  todos = todos.map(todo => {
+  store = update(store, {
+    todos: {
+      $apply: todos => {
+        return todos.map(todo => {
 
-    if(todo.id === value.id) {
-      return {
-        ...todo,
-        text: value.text
-      };
+          if(todo.id === value.id) {
+            return {
+              ...todo,
+              text: value.text
+            };
+          }
+
+          return todo;
+        });
+      }
     }
-
-    return todo;
   });
 
-  subject.onNext(todos);
+  subject.onNext(store);
 });
 
 todoActions.subjects.toggleEdit.subscribe((id) => {
-  todos = todos.map(todo => {
-    if(todo.id === id) {
-      return {
-        ...todo,
-        edit: !todo.edit
+  store = update(store, {
+    todos: {
+      $apply: todos => {
+        return todos.map(todo => {
+          if(todo.id === id) {
+            return {
+              ...todo,
+              edit: !todo.edit
+            }
+          }
+
+          return todo;
+        });
       }
     }
-
-    return todo;
   });
 
-  subject.onNext(todos);
+  subject.onNext(store);
 });
 
 todoActions.subjects.toggleCompleted.subscribe((data) => {
-  todos = todos.map(todo => {
-    if(todo.id === data.id) {
-      return {
-        ...todo,
-        completed: data.completed
+  store = update(store, {
+    todos: {
+      $apply: todos => {
+        return todos.map(todo => {
+          if(todo.id === data.id) {
+            return {
+              ...todo,
+              completed: data.completed
+            }
+          }
+
+          return todo;
+        });
+
       }
     }
+  })
 
-    return todo;
-  });
-
-  subject.onNext(todos);
+  subject.onNext(store);
 });
 
 todoActions.subjects.toggleAll.subscribe((allCompleted) => {
-  todos = todos.map(todo => {
-    return {
-      ...todo,
-      completed: !allCompleted
+  store = update(store, {
+    todos: {
+      $apply: todos => {
+        return todos.map(todo => {
+          return {
+            ...todo,
+            completed: !allCompleted
+          }
+        });
+      }
     }
   });
 
-  subject.onNext(todos);
+  subject.onNext(store);
 });
 
 todoActions.subjects.clearCompleted.subscribe(() => {
-  todos = todos.filter(todo => !todo.completed);
+  store = update(store, {
+    todos: {
+      $apply: todos => todos.filter(todo => !todo.completed)
+    }
+  });
 
-  subject.onNext(todos);
+  subject.onNext(store);
+});
+
+todoActions.subjects.filter.subscribe((toFilter) => {
+  store = update(store, {
+    filter: {
+      $set: toFilter
+    }
+  });
+
+  subject.onNext(store);
 });
 
 export default { subject };

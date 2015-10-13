@@ -1,5 +1,3 @@
-Just a simple todo app using React + RxJS.
+# TodoMVC - React + RxJS
 
-It follows the same idea of the todomvc project, but with a horrible layout.
-
-:)
+This is an implementation of the awesome [TodoMVC](http://todomvc.com/) using [React](https://facebook.github.io/react/) as my view library and [RxJS](https://github.com/Reactive-Extensions/RxJS) as my Flux.

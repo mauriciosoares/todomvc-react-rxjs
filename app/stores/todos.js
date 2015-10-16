@@ -3,6 +3,7 @@ import update from 'react-addons-update';
 import Immutable from 'immutable';
 
 import todoActions from '../actions/todo';
+import todoRecord from '../utils/todoRecord'
 
 let store = Immutable.fromJS({
   filter: undefined,
@@ -13,65 +14,42 @@ let subject = new Rx.BehaviorSubject(store);
 
 todoActions.subjects.add.subscribe((text) => {
   store = store.updateIn(['todos'], (todos) => {
-    return todos.push({
+    return todos.push(new todoRecord({
       id: +new Date(),
-      edit: false,
-      completed: false,
       text
-    });
+    }));
   });
 
   subject.onNext(store);
 });
 
 todoActions.subjects.delete.subscribe((id) => {
-  store = update(store, {
-    todos: {
-      $apply: todos => todos.filter(todo => todo.id !== id)
-    }
+  store = store.updateIn(['todos'], (todos) => {
+    return todos.filter(todo => todo.id !== id);
   });
 
   subject.onNext(store);
 });
 
 todoActions.subjects.update.subscribe((value) => {
-  store = update(store, {
-    todos: {
-      $apply: todos => {
-        return todos.map(todo => {
+  store = store.updateIn(['todos'], (todos) => {
+    return todos.map(todo => {
+      if(todo.id === value.id) return todo.set('text', value.text);
 
-          if(todo.id === value.id) {
-            return {
-              ...todo,
-              text: value.text
-            };
-          }
-
-          return todo;
-        });
-      }
-    }
+      return todo;
+    });
   });
 
   subject.onNext(store);
 });
 
 todoActions.subjects.toggleEdit.subscribe((id) => {
-  store = update(store, {
-    todos: {
-      $apply: todos => {
-        return todos.map(todo => {
-          if(todo.id === id) {
-            return {
-              ...todo,
-              edit: !todo.edit
-            }
-          }
+  store = store.updateIn(['todos'], (todos) => {
+    return todos.map(todo => {
+      if(todo.id === id) return todo.set('edit', !todo.edit);
 
-          return todo;
-        });
-      }
-    }
+      return todo;
+    });
   });
 
   subject.onNext(store);

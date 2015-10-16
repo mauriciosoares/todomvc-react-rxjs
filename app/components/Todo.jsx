@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 
 import todoActions from '../actions/todo';
 import keys from '../utils/keys';
@@ -11,8 +12,8 @@ export default class Todos extends Component {
 
   render() {
     return (
-      <li className={classNames({'completed': this.props.completed, 'editing': this.props.edit})}>
-        {(this.props.edit) ? this.renderEdit() : this.renderText()}
+      <li className={classNames({'completed': this.props.todo.completed, 'editing': this.props.todo.edit})}>
+        {(this.props.todo.edit) ? this.renderEdit() : this.renderText()}
       </li>
     )
   }
@@ -24,10 +25,10 @@ export default class Todos extends Component {
           onChange={::this.toggleCompleted}
           ref="checkbox"
           type="checkbox"
-          checked={(this.props.completed) ? 'checked' : ''}
+          checked={(this.props.todo.completed) ? 'checked' : ''}
           className="toggle" />
 
-        <label onDoubleClick={::this.toggleEdit}>{this.props.text}</label>
+        <label onDoubleClick={::this.toggleEdit}>{this.props.todo.text}</label>
         <button
           className="destroy"
           onClick={::this.delete}></button>
@@ -36,7 +37,7 @@ export default class Todos extends Component {
   }
 
   toggleCompleted() {
-    todoActions.toggleCompleted(this.props.id, this.refs.checkbox.getDOMNode().checked);
+    todoActions.toggleCompleted(this.props.todo.id, this.refs.checkbox.getDOMNode().checked);
   }
 
   renderEdit() {
@@ -45,30 +46,30 @@ export default class Todos extends Component {
         onKeyUp={::this.update}
         onBlur={::this.toggleEdit}
         ref="input"
-        defaultValue={this.props.text}
+        defaultValue={this.props.todo.text}
         className="edit"
         autoFocus />
     )
   }
 
   toggleEdit() {
-    todoActions.toggleEdit(this.props.id);
+    todoActions.toggleEdit(this.props.todo.id);
   }
 
   delete() {
-    todoActions.delete(this.props.id);
+    todoActions.delete(this.props.todo.id);
   }
 
   update(event) {
     if(event.which === keys.ESC) return this.toggleEdit();
 
-    let domNode = React.findDOMNode(this.refs.input);
+    let domNode = ReactDOM.findDOMNode(this.refs.input);
     if(event.which !== 13 || !domNode.value) return;
 
 
     this.toggleEdit();
 
-    todoActions.update(this.props.id, domNode.value);
+    todoActions.update(this.props.todo.id, domNode.value);
     domNode.value = '';
   }
 }

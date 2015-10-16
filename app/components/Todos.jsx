@@ -15,7 +15,10 @@ export default class Todos extends Component {
       <section className="main">
         {this.renderToggleAll()}
         <ul className="todo-list">
-          {todos.map(todo => <Todo key={todo.id} {...todo} />)}
+          {todos.map(todo => {
+            console.log(todo.id);
+            return <Todo key={todo.id} todo={todo} />
+          })}
         </ul>
       </section>
     )

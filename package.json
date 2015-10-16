@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "classnames": "^2.1.5",
-    "react": "^0.13.3",
+    "immutable": "^3.7.5",
+    "react": "^0.14.0",
     "rx": "^3.1.2"
   }
 }

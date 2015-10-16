@@ -27,6 +27,7 @@
     "classnames": "^2.1.5",
     "immutable": "^3.7.5",
     "react": "^0.14.0",
+    "react-addons-update": "^0.14.0",
     "rx": "^3.1.2"
   }
 }

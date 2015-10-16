@@ -78,20 +78,16 @@ todoActions.subjects.toggleAll.subscribe((allCompleted) => {
 });
 
 todoActions.subjects.clearCompleted.subscribe(() => {
-  store = update(store, {
-    todos: {
-      $apply: todos => todos.filter(todo => !todo.completed)
-    }
+  store = store.updateIn(['todos'], (todos) => {
+    return todos.filter(todo => !todo.completed);
   });
 
   subject.onNext(store);
 });
 
-todoActions.subjects.filter.subscribe((toFilter) => {
-  store = update(store, {
-    filter: {
-      $set: toFilter
-    }
+todoActions.subjects.filter.subscribe((filter) => {
+  store = store.updateIn(['filter'], () => {
+    return filter;
   });
 
   subject.onNext(store);

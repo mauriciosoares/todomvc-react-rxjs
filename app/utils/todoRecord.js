@@ -1,7 +1,7 @@
 import Immutable from 'immutable';
 
 export default Immutable.Record({
-  id: +new Date(),
+  id: null,
   edit: false,
   completed: false,
   text: ''

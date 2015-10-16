@@ -14,18 +14,18 @@ export default class Footer extends Component {
   }
 
   renderFooter() {
-    if(!this.props.todos.length) return null;
+    if(!this.props.store.get('todos').size) return null;
     return (
       <footer className="footer">
-        <Count length={this.props.todos.filter(todo => !todo.completed).length} />
-        <Filter filter={this.props.filter} />
+        <Count length={this.props.store.get('todos').filter(todo => !todo.completed).size} />
+        <Filter filter={this.props.store.get('filter')} />
         {this.renderClearCompleted()}
       </footer>
     )
   }
 
   renderClearCompleted() {
-    if(this.props.todos.filter(todo => todo.completed).length > 0) {
+    if(this.props.store.get('todos').filter(todo => todo.completed).size > 0) {
       return (
         <button
           className="clear-completed"

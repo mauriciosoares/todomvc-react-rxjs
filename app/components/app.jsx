@@ -14,7 +14,7 @@ export default class App extends Component {
       <div>
         <Header />
         <Todos {...this.props} />
-        {/*}<Footer {...this.props} />{*/}
+        <Footer {...this.props} />
       </div>
     )
   }

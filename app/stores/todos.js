@@ -31,10 +31,10 @@ todoActions.subjects.delete.subscribe((id) => {
   subject.onNext(store);
 });
 
-todoActions.subjects.update.subscribe((value) => {
+todoActions.subjects.update.subscribe((data) => {
   store = store.updateIn(['todos'], (todos) => {
     return todos.map(todo => {
-      if(todo.id === value.id) return todo.set('text', value.text);
+      if(todo.id === data.id) return todo.set('text', data.text);
 
       return todo;
     });
@@ -56,39 +56,22 @@ todoActions.subjects.toggleEdit.subscribe((id) => {
 });
 
 todoActions.subjects.toggleCompleted.subscribe((data) => {
-  store = update(store, {
-    todos: {
-      $apply: todos => {
-        return todos.map(todo => {
-          if(todo.id === data.id) {
-            return {
-              ...todo,
-              completed: data.completed
-            }
-          }
+  store = store.updateIn(['todos'], (todos) => {
+    return todos.map(todo => {
+      if(todo.id === data.id) return todo.set('completed', data.completed);
 
-          return todo;
-        });
-
-      }
-    }
-  })
+      return todo;
+    })
+  });
 
   subject.onNext(store);
 });
 
 todoActions.subjects.toggleAll.subscribe((allCompleted) => {
-  store = update(store, {
-    todos: {
-      $apply: todos => {
-        return todos.map(todo => {
-          return {
-            ...todo,
-            completed: !allCompleted
-          }
-        });
-      }
-    }
+  store = store.updateIn(['todos'], (todos) => {
+    todos.map(todo => {
+      return todo.set('completed', !allCompleted);
+    });
   });
 
   subject.onNext(store);

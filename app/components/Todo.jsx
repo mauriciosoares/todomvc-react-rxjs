@@ -37,7 +37,7 @@ export default class Todos extends Component {
   }
 
   toggleCompleted() {
-    todoActions.toggleCompleted(this.props.todo.id, this.refs.checkbox.getDOMNode().checked);
+    todoActions.toggleCompleted(this.props.todo.id, this.refs.checkbox.checked);
   }
 
   renderEdit() {

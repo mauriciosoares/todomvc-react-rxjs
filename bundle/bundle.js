@@ -511,7 +511,7 @@ var Todos = (function (_Component) {
   }, {
     key: 'toggleCompleted',
     value: function toggleCompleted() {
-      _actionsTodo2['default'].toggleCompleted(this.props.todo.id, this.refs.checkbox.getDOMNode().checked);
+      _actionsTodo2['default'].toggleCompleted(this.props.todo.id, this.refs.checkbox.checked);
     }
   }, {
     key: 'renderEdit',
@@ -606,7 +606,6 @@ var Todos = (function (_Component) {
           'ul',
           { className: 'todo-list' },
           todos.map(function (todo) {
-            console.log(todo.id);
             return _react2['default'].createElement(_TodoJsx2['default'], { key: todo.id, todo: todo });
           })
         )
@@ -683,8 +682,6 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _rx = require('rx');
@@ -735,10 +732,10 @@ _actionsTodo2['default'].subjects['delete'].subscribe(function (id) {
   subject.onNext(store);
 });
 
-_actionsTodo2['default'].subjects.update.subscribe(function (value) {
+_actionsTodo2['default'].subjects.update.subscribe(function (data) {
   store = store.updateIn(['todos'], function (todos) {
     return todos.map(function (todo) {
-      if (todo.id === value.id) return todo.set('text', value.text);
+      if (todo.id === data.id) return todo.set('text', data.text);
 
       return todo;
     });
@@ -760,36 +757,22 @@ _actionsTodo2['default'].subjects.toggleEdit.subscribe(function (id) {
 });
 
 _actionsTodo2['default'].subjects.toggleCompleted.subscribe(function (data) {
-  store = (0, _reactAddonsUpdate2['default'])(store, {
-    todos: {
-      $apply: function $apply(todos) {
-        return todos.map(function (todo) {
-          if (todo.id === data.id) {
-            return _extends({}, todo, {
-              completed: data.completed
-            });
-          }
+  store = store.updateIn(['todos'], function (todos) {
+    return todos.map(function (todo) {
+      if (todo.id === data.id) return todo.set('completed', data.completed);
 
-          return todo;
-        });
-      }
-    }
+      return todo;
+    });
   });
 
   subject.onNext(store);
 });
 
 _actionsTodo2['default'].subjects.toggleAll.subscribe(function (allCompleted) {
-  store = (0, _reactAddonsUpdate2['default'])(store, {
-    todos: {
-      $apply: function $apply(todos) {
-        return todos.map(function (todo) {
-          return _extends({}, todo, {
-            completed: !allCompleted
-          });
-        });
-      }
-    }
+  store = store.updateIn(['todos'], function (todos) {
+    todos.map(function (todo) {
+      return todo.set('completed', !allCompleted);
+    });
   });
 
   subject.onNext(store);

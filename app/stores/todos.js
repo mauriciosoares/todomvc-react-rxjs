@@ -1,25 +1,24 @@
 import Rx from 'rx';
 import update from 'react-addons-update';
+import Immutable from 'immutable';
 
 import todoActions from '../actions/todo';
 
-let store = {
-  todos: [],
-  filter: undefined
-};
+let store = Immutable.fromJS({
+  filter: undefined,
+  todos: []
+});
 
 let subject = new Rx.BehaviorSubject(store);
 
 todoActions.subjects.add.subscribe((text) => {
-  store = update(store, {
-    todos: {
-      $push: [{
-        id: +new Date(),
-        edit: false,
-        completed: false,
-        text
-      }]
-    }
+  store = store.updateIn(['todos'], (todos) => {
+    return todos.push({
+      id: +new Date(),
+      edit: false,
+      completed: false,
+      text
+    });
   });
 
   subject.onNext(store);

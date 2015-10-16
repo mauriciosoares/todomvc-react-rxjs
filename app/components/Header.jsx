@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 
 import todoActions from '../actions/todo';
 
@@ -23,7 +24,7 @@ export default class Header extends Component {
   }
 
   add(event) {
-    let domNode = React.findDOMNode(this.refs.input);
+    let domNode = ReactDOM.findDOMNode(this.refs.input);
 
     if(event.which !== keys.ENTER || !domNode.value) return;
 

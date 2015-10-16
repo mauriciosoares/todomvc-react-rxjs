@@ -69,7 +69,7 @@ todoActions.subjects.toggleCompleted.subscribe((data) => {
 
 todoActions.subjects.toggleAll.subscribe((allCompleted) => {
   store = store.updateIn(['todos'], (todos) => {
-    todos.map(todo => {
+    return todos.map(todo => {
       return todo.set('completed', !allCompleted);
     });
   });

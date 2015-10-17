@@ -42,7 +42,7 @@ export default {
     subjects.clearCompleted.onNext();
   },
 
-  filter(toFilter) {
-    subjects.filter.onNext(toFilter);
+  filter(filter) {
+    subjects.filter.onNext(filter);
   }
 };

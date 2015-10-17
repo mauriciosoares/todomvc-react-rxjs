@@ -14,8 +14,7 @@ let subject = new Rx.BehaviorSubject(store);
 
 todoActions.subjects.add.subscribe((text) => {
   store = store.updateIn(['todos'], (todos) => {
-    return todos.push(new todoRecord({
-      id: +new Date(),
+    return todos.push(todoRecord()({
       text
     }));
   });

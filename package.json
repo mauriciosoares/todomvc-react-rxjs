@@ -26,6 +26,7 @@
   "dependencies": {
     "classnames": "^2.1.5",
     "immutable": "^3.7.5",
+    "node-uuid": "^1.4.3",
     "react": "^0.14.0",
     "react-addons-update": "^0.14.0",
     "react-dom": "^0.14.0",

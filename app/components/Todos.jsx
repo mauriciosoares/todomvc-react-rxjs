@@ -9,7 +9,7 @@ export default class Todos extends Component {
   }
 
   render() {
-    let todos = this.props.store.get('todos').filter(::this.renderTodo);
+    let todos = this.props.todos.filter(::this.renderTodo);
 
     return (
       <section className="main">
@@ -22,14 +22,14 @@ export default class Todos extends Component {
   }
 
   renderTodo(todo) {
-    if(this.props.store.get('filter') === undefined) return true;
+    if(this.props.filter === undefined) return true;
 
-    return this.props.store.get('filter') === todo.completed;
+    return this.props.filter === todo.completed;
   }
 
   renderToggleAll() {
-    if(this.props.store.get('todos').size > 0) {
-      let allCompleted = (this.props.store.get('todos').filter(todo => todo.completed).size === this.props.store.get('todos').size);
+    if(this.props.todos.size > 0) {
+      let allCompleted = (this.props.todos.filter(todo => todo.completed).size === this.props.todos.size);
 
       return (
         <input

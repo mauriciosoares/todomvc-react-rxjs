@@ -10,12 +10,17 @@ export default class App extends Component {
   }
 
   render() {
+    const store = {
+      todos: this.props.store.get('todos'),
+      filter: this.props.store.get('filter')
+    };
+
     return (
       <div>
         <Header />
-        <Todos {...this.props} />
-        <Footer {...this.props} />
+        <Todos {...store} />
+        <Footer {...store} />
       </div>
-    )
+    );
   }
 }

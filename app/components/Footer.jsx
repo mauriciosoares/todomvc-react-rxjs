@@ -17,7 +17,7 @@ export default class Footer extends Component {
       <footer className="footer">
         <Count length={this.props.todos.filter(todo => !todo.completed).size} />
         <Filter filter={this.props.filter} />
-        <ClearCompleted todos={this.props.todos} />
+        <ClearCompleted length={this.props.todos.filter(todo => todo.completed).size} />
       </footer>
     );
   }

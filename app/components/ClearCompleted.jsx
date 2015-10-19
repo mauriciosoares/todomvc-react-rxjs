@@ -8,7 +8,7 @@ export default class clearCompleted extends Component {
   }
 
   render() {
-    if(this.props.todos.filter(todo => todo.completed).size === 0) return null;
+    if(this.props.length === 0) return null;
 
     return (
       <button

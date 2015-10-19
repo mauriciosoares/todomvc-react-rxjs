@@ -162,9 +162,7 @@ var clearCompleted = (function (_Component) {
   _createClass(clearCompleted, [{
     key: 'render',
     value: function render() {
-      if (this.props.todos.filter(function (todo) {
-        return todo.completed;
-      }).size === 0) return null;
+      if (this.props.length === 0) return null;
 
       return _react2['default'].createElement(
         'button',
@@ -384,7 +382,9 @@ var Footer = (function (_Component) {
             return !todo.completed;
           }).size }),
         _react2['default'].createElement(_FilterJsx2['default'], { filter: this.props.filter }),
-        _react2['default'].createElement(_ClearCompletedJsx2['default'], { todos: this.props.todos })
+        _react2['default'].createElement(_ClearCompletedJsx2['default'], { length: this.props.todos.filter(function (todo) {
+            return todo.completed;
+          }).size })
       );
     }
   }]);

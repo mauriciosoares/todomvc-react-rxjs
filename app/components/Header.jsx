@@ -10,6 +10,11 @@ export default class Header extends Component {
     super(props);
   }
 
+  // check a proper way of doing this
+  shouldComponentUpdate() {
+    return false;
+  }
+
   render() {
     return (
       <header className="header">

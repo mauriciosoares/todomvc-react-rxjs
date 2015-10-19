@@ -13,6 +13,7 @@ let store = Immutable.fromJS({
   filter: null,
   todos: (persistedData) ? persistedData : []
 }, (key, value) => {
+  // in case it was a record with an ID
   if(value.get('id')) return todoRecord()(value);
 
   return Immutable.Iterable.isIndexed(value) ? value.toList() : value.toOrderedMap();

@@ -10,6 +10,14 @@ export default class Footer extends Component {
     super(props);
   }
 
+  shouldComponentUpdate(nextProps) {
+    if(nextProps.filter !== this.props.filter) return true;
+
+
+
+    return true;
+  }
+
   render() {
     if(!this.props.todos.size) return null;
 

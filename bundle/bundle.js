@@ -371,6 +371,13 @@ var Footer = (function (_Component) {
   }
 
   _createClass(Footer, [{
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nextProps) {
+      if (nextProps.filter !== this.props.filter) return true;
+
+      return true;
+    }
+  }, {
     key: 'render',
     value: function render() {
       if (!this.props.todos.size) return null;

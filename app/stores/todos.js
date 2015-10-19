@@ -9,31 +9,20 @@ import persist from '../utils/persist';
 
 let persistedData = persist.get();
 
-// let store = Immutable.fromJS((persistedData) ? persistedData : {
-//   filter: null,
-//   todos: []
-// }, (key, value) => {
-//   return (value.get('id')) ? todoRecord()(value) : value;
-// });
-
-// console.log(persistedData);
-
-let store = Immutable.fromJS(persistedData, function(key, value) {
-  // console.log(arguments);
+let store = Immutable.fromJS((persistedData) ? persistedData : {
+  filter: null,
+  todos: []
+}, (key, value) => {
   if(value.get('id')) {
     return todoRecord()(value);
   }
   let isIndexed = Immutable.Iterable.isIndexed(value);
   return isIndexed ? value.toList() : value.toOrderedMap();
-
 });
-
 
 let subject = new Rx.BehaviorSubject(store);
 
-subject.subscribe((store) => {
-  persist.set(store.toJS());
-});
+subject.subscribe(persist.set);
 
 todoActions.subjects.add.subscribe((text) => {
   store = store.updateIn(['todos'], (todos) => {

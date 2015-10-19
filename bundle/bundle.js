@@ -719,17 +719,10 @@ var _utilsPersist2 = _interopRequireDefault(_utilsPersist);
 
 var persistedData = _utilsPersist2['default'].get();
 
-// let store = Immutable.fromJS((persistedData) ? persistedData : {
-//   filter: null,
-//   todos: []
-// }, (key, value) => {
-//   return (value.get('id')) ? todoRecord()(value) : value;
-// });
-
-// console.log(persistedData);
-
-var store = _immutable2['default'].fromJS(persistedData, function (key, value) {
-  // console.log(arguments);
+var store = _immutable2['default'].fromJS(persistedData ? persistedData : {
+  filter: null,
+  todos: []
+}, function (key, value) {
   if (value.get('id')) {
     return (0, _utilsTodoRecord2['default'])()(value);
   }
@@ -739,9 +732,7 @@ var store = _immutable2['default'].fromJS(persistedData, function (key, value) {
 
 var subject = new _rx2['default'].BehaviorSubject(store);
 
-subject.subscribe(function (store) {
-  _utilsPersist2['default'].set(store.toJS());
-});
+subject.subscribe(_utilsPersist2['default'].set);
 
 _actionsTodo2['default'].subjects.add.subscribe(function (text) {
   store = store.updateIn(['todos'], function (todos) {
@@ -843,14 +834,22 @@ exports["default"] = {
 module.exports = exports["default"];
 
 },{}],12:[function(require,module,exports){
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _immutable = require('immutable');
+
+var _immutable2 = _interopRequireDefault(_immutable);
+
 var persist = {
   set: function set(data) {
-    window.localStorage.todos = JSON.stringify(data);
+    console.log(data);
+    window.localStorage.todos = JSON.stringify(data.toJS());
   },
 
   get: function get() {
@@ -859,10 +858,10 @@ var persist = {
   }
 };
 
-exports["default"] = persist;
-module.exports = exports["default"];
+exports['default'] = persist;
+module.exports = exports['default'];
 
-},{}],13:[function(require,module,exports){
+},{"immutable":16}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {

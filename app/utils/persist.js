@@ -2,7 +2,6 @@ import Immutable from 'immutable';
 
 let persist = {
   set(data) {
-    console.log(data);
     window.localStorage.todos = JSON.stringify(data.toJS());
   },
 

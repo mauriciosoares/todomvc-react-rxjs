@@ -719,20 +719,20 @@ var _utilsPersist2 = _interopRequireDefault(_utilsPersist);
 
 var persistedData = _utilsPersist2['default'].get();
 
-var store = _immutable2['default'].fromJS(persistedData ? persistedData : {
+var store = _immutable2['default'].fromJS({
   filter: null,
-  todos: []
+  todos: persistedData ? persistedData : []
 }, function (key, value) {
-  if (value.get('id')) {
-    return (0, _utilsTodoRecord2['default'])()(value);
-  }
-  var isIndexed = _immutable2['default'].Iterable.isIndexed(value);
-  return isIndexed ? value.toList() : value.toOrderedMap();
+  if (value.get('id')) return (0, _utilsTodoRecord2['default'])()(value);
+
+  return _immutable2['default'].Iterable.isIndexed(value) ? value.toList() : value.toOrderedMap();
 });
 
 var subject = new _rx2['default'].BehaviorSubject(store);
 
-subject.subscribe(_utilsPersist2['default'].set);
+subject.map(function (store) {
+  return store.get('todos');
+}).distinctUntilChanged().subscribe(_utilsPersist2['default'].set);
 
 _actionsTodo2['default'].subjects.add.subscribe(function (text) {
   store = store.updateIn(['todos'], function (todos) {
@@ -848,7 +848,6 @@ var _immutable2 = _interopRequireDefault(_immutable);
 
 var persist = {
   set: function set(data) {
-    console.log(data);
     window.localStorage.todos = JSON.stringify(data.toJS());
   },
 

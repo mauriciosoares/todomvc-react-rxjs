@@ -22,7 +22,7 @@ export default class Todos extends Component {
   }
 
   renderTodo(todo) {
-    if(this.props.filter === undefined) return true;
+    if(this.props.filter === null) return true;
 
     return this.props.filter === todo.completed;
   }

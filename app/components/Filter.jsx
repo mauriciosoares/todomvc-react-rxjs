@@ -12,7 +12,7 @@ export default class Filter extends Component {
     return (
       <ul className="filters">
         <li>
-          <a className={classNames({'selected': (this.props.filter === undefined)})} onClick={this.filter.bind(this, undefined)} href="#">All</a>
+          <a className={classNames({'selected': (this.props.filter === null)})} onClick={this.filter.bind(this, null)} href="#">All</a>
         </li>
         <li>
           <a className={classNames({'selected': (this.props.filter === false)})} onClick={this.filter.bind(this, false)} href="#">Active</a>

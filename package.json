@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "watchify app/main.jsx -o bundle/bundle.js -v --debug"
+    "watch": "watchify app/main.jsx -o bundle/bundle.js -v"
   },
   "browserify": {
     "transform": [
